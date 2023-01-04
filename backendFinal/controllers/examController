@@ -1,0 +1,53 @@
+const Exam= require('../models/ExamModel')
+const mongoose = require("mongoose")
+
+
+
+//crete new exam
+const createEx = async(req,res)=>{
+  
+    const {examId,instructorId,courseCode,year} = req.body;
+  
+    try{
+      const WholeExam= await  Exam.create( {examId,instructorId,courseCode,year})
+         res.status(200).json(WholeExam)
+       } 
+         catch(error){
+         res.status(400).json({error: error.message})
+          }
+  
+          
+    
+  
+        } 
+
+
+        const getExams = async (req,res)=> {
+          console.log('Course Get All');
+          const exams = await Exam.find({}).sort({createdAt: -1});
+      res.status(200).json(exams);
+      }
+
+   //get all qustions for a singel exam
+
+   const getMCQ = async (req,res)=>{
+    const {id} = req.query
+
+    const exam= await Exam.findOne({courseCode:id})
+console.log(id);
+    if(!exam){
+        return res.status(404).json({error:"No Exams availabe with that ID."})
+    }
+   
+    const MCQ =await Questions.find({examId:exam._id})
+   
+    res.status(200).json(MCQ)
+   
+}
+
+module.exports= {
+    createEx,
+    getExams,
+    getMCQ
+
+}

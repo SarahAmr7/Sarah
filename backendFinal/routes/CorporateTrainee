@@ -1,0 +1,21 @@
+const express = require ('express')
+const CorporateTrainees= require('../models/CorporateTraineeModel')
+
+const { selectCountry,updateCopCountry,createTrainee ,post} = require('../controllers/corporateTraineeController')
+
+const router = express.Router()
+
+
+
+
+router.post('/post', post)
+
+// select country
+router.post('/selectCountry',selectCountry)
+router.post('/CreateTrainee',createTrainee)
+router.get('/testget',(req,res) => {
+    res.json({mssg:"test Calling"})
+})
+
+router.patch('/updateCopParam/:id',updateCopCountry)
+module.exports = router

@@ -1,0 +1,21 @@
+const express = require('express')
+const Exam= require('../models/ExamModel')
+const router = express.Router()
+
+const {
+    
+    createEx,
+    getExams
+    
+    
+    
+}= require("../controllers/examController")
+
+
+router.post('/createEx',createEx)
+router.get('/getExams',getExams)
+
+
+
+
+module.exports= router

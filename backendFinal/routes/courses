@@ -1,0 +1,255 @@
+const express = require('express')
+const Courses= require('../models/CoursesModel')
+const router = express.Router()
+const {
+    getCourses,
+        getCourse,
+        getCoursesbyPriceDec,
+        getCoursesbyPriceAsc,
+        getCoursesbySubjectDec,
+        getCoursesbySubjectAsc,
+        getCoursesbyIdDec,
+        getCoursesbyIdAsc,
+        filterCourse,
+        filterCoursePrice,
+        filterCourseTitle,
+        filterCourseInstructor,
+        getByTitleOrInstructor,
+        getCoursesByInstructor,
+        getCodes,  
+              createReview,
+              addPreview,
+              getOneCourse,
+              mostViewedCourses,
+              ////////////////////////////
+        addDiscount
+        ////////////////////////////
+
+
+    
+    
+    
+}= require("../controllers/coursesControllers")
+
+
+
+////////////////////////////////////////
+////////////////////////////////////////
+router.post('/addDiscount', addDiscount);
+
+////////////////////////////////////////
+////////////////////////////////////////
+
+
+router.get('/mostViewedCourses',mostViewedCourses)
+
+// get a single course
+router.get('/GetAllWithID/:id', getCourse)
+
+// get all courses
+router.get('/getAllCourses', getCourses)
+
+router.get('/getCourse',getOneCourse)
+
+// get all codes
+router.get('/getAllCodes', getCodes)
+//createReview
+router.post('/review',createReview)
+
+router.post('/getCourseByTitleorInst',getByTitleOrInstructor)
+
+const CoursesModel = require('../models/CoursesModel')
+
+//GET ALL
+router.get('/getAll', async (req,res) => {
+try{
+    const Courses = await CoursesModel.find().then((result) => {
+        res.send(result)
+    })
+}catch(err){
+    res.status(500).json({message: err.message})
+}
+
+})
+
+
+
+//GET by Rating
+
+router.get('/byRating',getCourseByRating, (req,res) =>{
+    res.json(res.course)
+
+})
+
+//GET by subject
+
+router.get('/bySubject',getCourseBySubject, (req,res) =>{
+    res.json(res.course)
+
+})
+
+router.get('/byTitle',getCourseByTitle, (req,res) =>{
+    res.json(res.course)
+
+})
+
+
+//Update 
+
+router.patch('/:id', (req,res)=> {
+
+})
+//POST 
+router.post('/', async (req,res) => {
+
+    const Course = new CoursesModel({
+        totalHours: req.body.totalHours,
+        price: req.body.price,
+        Code: req.body.Code,
+        title: req.body.title,
+        courseOutline: req.body.courseOutline,
+        previewVideo: req.body.previewVideo,
+        instructor: req.body.instructor,
+        noOfViews:0
+    })
+
+    try {
+        const newCourse = await Course.save()
+        res.status(201).json(newCourse)
+    } catch (Err){
+        res.status(400)
+        
+    }
+
+
+})
+
+async function getCourseByRating(req, res, next){
+    
+    let course
+    try{
+        course = await CoursesModel.find({rating: req.body.rating})
+        if(course == null){
+            return res.status(404).json({message: 'Cannot find course'})
+        }
+    } catch (err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.course = course
+    next()
+
+
+}
+
+
+async function getCourseBySubject(req, res, next){
+    
+    let course
+    try{
+        course = await CoursesModel.find({subject: req.body.subject})
+        if(course == null){
+            return res.status(404).json({message: 'Cannot find course'})
+        }
+    } catch (err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.course = course
+    next()
+
+
+}
+
+async function getCourseBySubject(req, res, next){
+    
+    let course
+    try{
+        course = await CoursesModel.find({subject: req.body.subject})
+        if(course == null){
+            return res.status(404).json({message: 'Cannot find course'})
+        }
+    } catch (err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.course = course
+    next()
+
+
+}
+
+async function getCourseByTitle(req, res, next){
+    
+    let course
+
+    try{
+        course = await CoursesModel.find({title: req.body.title})
+        if(course == null){
+            return res.status(404).json({message: 'Cannot find course'})
+        }
+    } catch (err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.course = course
+    next()
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//get all courses sorted by Subject Dec
+
+router.get('/sortSubjectDec',getCoursesbySubjectDec)
+
+//get all courses sorted by Subject Asc
+
+router.get('/sortSubjectAsc',getCoursesbySubjectAsc)
+
+
+//get all courses sorted by price Dec
+
+router.get('/sortPriceDec',getCoursesbyPriceDec)
+
+
+//get all courses sorted by price Asc
+
+router.get('/sortPriceAsc',getCoursesbyPriceAsc)
+
+
+//get all courses sorted by id Dec
+
+router.get('/sortIdDec',getCoursesbyIdDec)
+router.put('/addPreview',addPreview)
+
+
+//get all courses sorted by id Asc
+
+router.get('/sortIdAsc',getCoursesbyIdAsc)
+router.post('/filterCourse', filterCourse)
+router.post('/filterCoursePrice',filterCoursePrice)
+router.post('/filterCourseTitle',filterCourseTitle)
+router.post('/filterCourseInstructor',filterCourseInstructor)
+router.get('/getbyins',getCoursesByInstructor)
+
+
+module.exports= router

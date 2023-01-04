@@ -1,0 +1,17 @@
+const express = require('express')
+const Admin= require('../models/AdminModel')
+const router = express.Router()
+const {
+    createAdmin,
+    AdminLogin,
+    getCorporateTraineeRequests,
+    
+}= require('../controllers/adminControllers')
+
+// post a new Admin
+router.post('/', createAdmin)
+router.post('/AdminLogin', AdminLogin)
+router.get('/getCorporateTraineeRequests',getCorporateTraineeRequests)
+
+module.exports= router
+

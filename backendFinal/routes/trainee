@@ -1,0 +1,15 @@
+const express = require('express')
+const Trainee= require('../models/TraineeMode')
+const router = express.Router()
+
+const{ createTrainee,TraineeLogin, changePassword, sendEmail,addingCourseToTrainee,getTraineeCourses } = require('../controllers/traineeControllers')
+
+// post a new trainee
+router.post('/', createTrainee)
+router.post('/TraineeLogin', TraineeLogin)  
+router.post('/changepassword', changePassword);
+router.post('/sendemail',sendEmail);
+router.post('/addingCourseToTrainee',addingCourseToTrainee)
+router.get('/getTraineeCourses',getTraineeCourses)
+
+module.exports= router
